@@ -9,12 +9,11 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
 ```{r}
 library(tidyverse)
 ```
 
+Let's read in the data
 ```{r}
 paths_and_names = tibble(filepath = list.files("./data/training", pattern = "*.psv", full.names = TRUE),
                          filename = basename(filepath))
@@ -22,7 +21,7 @@ paths_and_names = tibble(filepath = list.files("./data/training", pattern = "*.p
 
 ```{r}
 readfiles = function(object){
-  read.csv(object, sep = "|", header = TRUE, stringsAsFactors = FALSE)
+  read.csv(object, sep = "|", header = TRUE, stringsAsFactors = FALSE, na.strings = 'NaN')
 }
 
 df = paths_and_names %>% mutate(data = map(filepath, readfiles)) %>% 
@@ -30,7 +29,17 @@ df = paths_and_names %>% mutate(data = map(filepath, readfiles)) %>%
   select(-filepath)
 ```
 
+Checking for missing data 
+```{r}
+drop_na(df)
 
+sum(is.na(df))
+
+missing_train <- sapply(df, function(x) sum(is.na(x)))
+missing_train[missing_train > 0]
+
+summary(df)
+```
 
 
 
