@@ -25,7 +25,7 @@ readfiles = function(object){
   read.csv(object, sep = "|", header = TRUE, stringsAsFactors = FALSE)
 }
 
-df = paths_and_names %>% mutate(data =map(filepath, readfiles)) %>% 
+df = paths_and_names %>% mutate(data = map(filepath, readfiles)) %>% 
   unnest() %>% 
   select(-filepath)
 ```
