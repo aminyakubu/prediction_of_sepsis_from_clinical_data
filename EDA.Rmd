@@ -1,0 +1,43 @@
+---
+title: "Untitled"
+author: "Amin Yakubu"
+date: "3/8/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+library(tidyverse)
+```
+
+```{r}
+paths_and_names = tibble(filepath = list.files("./data/training", pattern = "*.psv", full.names = TRUE),
+                         filename = basename(filepath))
+```
+
+```{r}
+readfiles = function(object){
+  read.csv(object, sep = "|", header = TRUE, stringsAsFactors = FALSE)
+}
+
+df = paths_and_names %>% mutate(data =map(filepath, readfiles)) %>% 
+  unnest() %>% 
+  select(-filepath)
+```
+
+
+
+
+
+
+
+
+
+
+
+
